@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Set up axios default
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Your backend URL
+  baseURL: 'https://quiz-webapp-zl3m.onrender.com/api', // Your backend URL
 });
 
 const AuthContext = createContext();
