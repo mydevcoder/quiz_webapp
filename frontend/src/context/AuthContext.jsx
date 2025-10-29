@@ -1,9 +1,11 @@
+// src/context/AuthContext.jsx
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 // Set up axios default
 const api = axios.create({
-  baseURL: 'https://quiz-webapp-zl3m.onrender.com/api', // Your backend URL
+  // USE THE ENVIRONMENT VARIABLE
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api', 
 });
 
 const AuthContext = createContext();
@@ -15,9 +17,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       api.defaults.headers.common['x-auth-token'] = token;
-      // Try to fetch user data on load if token exists
-      // (You would add a '/api/auth/me' route for this)
-      // For this guide, we'll parse the user from local storage
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
@@ -35,10 +34,12 @@ export const AuthProvider = ({ children }) => {
     setUser(res.data.user);
     localStorage.setItem('token', res.data.token);
     localStorage.setItem('user', JSON.stringify(res.data.user));
-    return res.data.user; // Return user to check role
+    return res.data.user; 
   };
 
   const register = async (email, password) => {
+    // This function itself is correct.
+    // The error happens when api.post fails.
     await api.post('/auth/register', { email, password });
   };
 
@@ -55,4 +56,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-export default api; // Export the configured axios instance
+export default api;
