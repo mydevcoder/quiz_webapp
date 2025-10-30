@@ -27,7 +27,12 @@ router.post('/register', async (req, res) => {
     // Don't send token on register, force login
     res.status(201).json({ msg: 'User registered successfully' });
 
-  } catch (err) { res.status(500).send('Server error'); }
+  } catch (err) { 
+    // --- ADD THIS LINE ---
+    console.error('REGISTER ERROR:', err.message); 
+    // ---
+    res.status(500).send('Server error'); 
+  }
 });
 
 // POST /api/auth/login
